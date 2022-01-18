@@ -26,7 +26,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Offset?> points = <Offset>[];
+  List<Offset?> points = <Offset?>[];
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Clear Screen',
         onPressed: () {
           setState(() {
-            points.clear();
+            points = [];
           });
         },
       ),
@@ -62,9 +62,10 @@ class _MyHomePageState extends State<MyHomePage> {
       onPanEnd: (DragEndDetails details) {
         points.add(null);
       },
-      /// This method can be uncommented if each time you draw you would want to 
-      /// start a new drawing. This will reset the `points` array. 
-      /// 
+
+      /// This method can be uncommented if each time you draw you would want to
+      /// start a new drawing. This will reset the `points` array.
+      ///
       // onPanStart: (DragStartDetails details) {
       //   RenderBox box = context.findRenderObject() as RenderBox;
       //   Offset point = box.globalToLocal(details.globalPosition);
