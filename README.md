@@ -5,4 +5,4 @@ The project - initially posted on Medium - has been revamped to accommodate some
 PRs and suggestions are most welcome. Any comments for this project are also welcome in the form of Issues. Stay tuned for updates to the repository! 
 
 Branches and project states : 
-1. Master -> Original app. Normal sketching concepts & canvas description. Same app as the one present on the Medium blog
+1. Master -> Original app. Normal sketching concepts & canvas description. Almost the same app as the one initially shared. Minor adjustments and null safety included
