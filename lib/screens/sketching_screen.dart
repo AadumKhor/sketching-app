@@ -61,50 +61,7 @@ class _SketchingScreenState extends State<SketchingScreen>
             onPanUpdate: onPanUpdate,
             points: points,
           ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 24.0, left: 8.0),
-              child: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.menu, color: Colors.black)),
-            ),
-          ),
         ],
-      ),
-      drawer: Drawer(
-        elevation: 5.0,
-        backgroundColor: Colors.transparent,
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: SketchingColors.blue,
-              ),
-              child: Text('Drawer Header'),
-            ),
-            ListTile(
-              title: const Text('Item 1'),
-              onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Item 2'),
-              onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: SketchingColors.red,
