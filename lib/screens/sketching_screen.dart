@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:sketching/utils/index.dart';
 import 'package:sketching/widgets/index.dart';
 
@@ -13,6 +14,7 @@ class _SketchingScreenState extends State<SketchingScreen>
     implements SketchingMethods {
   late List<Offset?> points;
   static const startingColor = SketchingColors.blue;
+  late Color currentColor;
 
   @override
   void onPanUpdate(DragUpdateDetails details) {
@@ -41,12 +43,18 @@ class _SketchingScreenState extends State<SketchingScreen>
   void initState() {
     super.initState();
     points = [];
+    currentColor = startingColor;
   }
 
   @override
   void dispose() {
     super.dispose();
     points.clear();
+  }
+
+  void changeColor(Color color) {
+    setState(() => currentColor = color);
+    Navigator.of(context).pop();
   }
 
   @override
@@ -62,24 +70,18 @@ class _SketchingScreenState extends State<SketchingScreen>
             onPanUpdate: onPanUpdate,
             points: points,
           ),
-          Align(
-            alignment: Alignment.topRight,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 50.0, right: 10.0),
-              child: GestureDetector(
-                onTap: () {},
-                child: Container(
-                  width: 40.0,
-                  height: 40.0,
-                  decoration: BoxDecoration(
-                      color: startingColor,
-                      shape: BoxShape.circle,
-                      border:
-                          Border.all(color: SketchingColors.black, width: 2.0)),
-                ),
-              ),
-            ),
-          ),
+          SketchingColorPicker(
+              currentColor: currentColor,
+              onTapColorPicker: () {
+                showAboutDialog(context: context, children: [
+                  SingleChildScrollView(
+                    child: MaterialPicker(
+                      pickerColor: currentColor,
+                      onColorChanged: (Color color) => changeColor(color),
+                    ),
+                  )
+                ]);
+              })
         ],
       ),
       floatingActionButton: FloatingActionButton(
