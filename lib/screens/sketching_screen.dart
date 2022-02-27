@@ -12,6 +12,7 @@ class SketchingScreen extends StatefulWidget {
 class _SketchingScreenState extends State<SketchingScreen>
     implements SketchingMethods {
   late List<Offset?> points;
+  static const startingColor = SketchingColors.blue;
 
   @override
   void onPanUpdate(DragUpdateDetails details) {
@@ -60,6 +61,24 @@ class _SketchingScreenState extends State<SketchingScreen>
             onPanStart: onPanStart,
             onPanUpdate: onPanUpdate,
             points: points,
+          ),
+          Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 50.0, right: 10.0),
+              child: GestureDetector(
+                onTap: () {},
+                child: Container(
+                  width: 40.0,
+                  height: 40.0,
+                  decoration: BoxDecoration(
+                      color: startingColor,
+                      shape: BoxShape.circle,
+                      border:
+                          Border.all(color: SketchingColors.black, width: 2.0)),
+                ),
+              ),
+            ),
           ),
         ],
       ),
