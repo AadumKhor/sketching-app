@@ -8,10 +8,12 @@ class SketchingArea extends StatelessWidget {
   final PanEnd onPanEnd;
   final PanStart onPanStart;
   final Color? backgroundColor;
+  final Color? brushColor;
 
   const SketchingArea(
       {Key? key,
       this.backgroundColor = SketchingColors.backgroundDefault,
+      this.brushColor,
       required this.onPanEnd,
       required this.onPanStart,
       required this.onPanUpdate,
@@ -30,7 +32,7 @@ class SketchingArea extends StatelessWidget {
             height: MediaQuery.of(context).size.height,
             color: backgroundColor,
             child: CustomPaint(
-              painter: Sketcher(points),
+              painter: Sketcher(points, brushColor: brushColor),
             )),
       ),
     );

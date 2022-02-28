@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:sketching/utils/index.dart';
 
 class Sketcher extends CustomPainter {
   //list of points which are to be painted
   final List<Offset?> points;
+  final Color? brushColor;
 
-  Sketcher(this.points);
+  Sketcher(this.points, {this.brushColor = SketchingColors.blue});
 
   @override
   void paint(Canvas canvas, Size size) {
     //properties of the paint used to draw
     Paint paint = Paint()
-      ..color = Colors.blue
+      ..color = brushColor!
       ..strokeCap = StrokeCap.round
       ..strokeWidth = 5.0;
 

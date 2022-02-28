@@ -14,7 +14,9 @@ class _SketchingScreenState extends State<SketchingScreen>
     implements SketchingMethods {
   late List<Offset?> points;
   static const startingColor = SketchingColors.blue;
-  late Color currentColor;
+  static const backgroundColor = SketchingColors.backgroundDefault;
+  late Color currentBrushColor;
+  late Color currentBackgroundColor;
 
   @override
   void onPanUpdate(DragUpdateDetails details) {
@@ -43,7 +45,8 @@ class _SketchingScreenState extends State<SketchingScreen>
   void initState() {
     super.initState();
     points = [];
-    currentColor = startingColor;
+    currentBrushColor = startingColor;
+    currentBackgroundColor = backgroundColor;
   }
 
   @override
@@ -52,8 +55,15 @@ class _SketchingScreenState extends State<SketchingScreen>
     points.clear();
   }
 
-  void changeColor(Color color) {
-    setState(() => currentColor = color);
+  void changeBrushColor(Color color) {
+    setState(() => currentBrushColor = color);
+    Navigator.of(context).pop();
+  }
+
+  void changeBackgroundColor(Color color) {
+    setState(() {
+      currentBackgroundColor = color;
+    });
     Navigator.of(context).pop();
   }
 
@@ -69,15 +79,31 @@ class _SketchingScreenState extends State<SketchingScreen>
             onPanStart: onPanStart,
             onPanUpdate: onPanUpdate,
             points: points,
+            brushColor: currentBrushColor,
+            backgroundColor: currentBackgroundColor,
           ),
           SketchingColorPicker(
-              currentColor: currentColor,
+              currentColor: currentBrushColor,
               onTapColorPicker: () {
                 showAboutDialog(context: context, children: [
                   SingleChildScrollView(
                     child: MaterialPicker(
-                      pickerColor: currentColor,
-                      onColorChanged: (Color color) => changeColor(color),
+                      pickerColor: currentBrushColor,
+                      onColorChanged: (Color color) => changeBrushColor(color),
+                    ),
+                  )
+                ]);
+              }),
+          SketchingColorPicker(
+              currentColor: currentBackgroundColor,
+              paddingTop: 100.0,
+              onTapColorPicker: () {
+                showAboutDialog(context: context, children: [
+                  SingleChildScrollView(
+                    child: MaterialPicker(
+                      pickerColor: currentBackgroundColor,
+                      onColorChanged: (Color color) =>
+                          changeBackgroundColor(color),
                     ),
                   )
                 ]);
