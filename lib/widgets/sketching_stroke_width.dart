@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sketching/utils/index.dart';
 
 class SketchingStrokeWidth extends StatelessWidget {
   final List<double> strokeWidths;
@@ -14,7 +15,30 @@ class SketchingStrokeWidth extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: List.generate(
+            3,
+            (index) => Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GestureDetector(
+                      onTap: () {
+                        onTapStrokeWidth(index);
+                      },
+                      child: Container(
+                        width: strokeWidths[index] * 10.0,
+                        height: strokeWidths[index] * 10.0,
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: SketchingColors.black),
+                      )),
+                )),
+      ),
+    );
   }
 }
 

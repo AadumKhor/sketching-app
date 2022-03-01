@@ -3,21 +3,19 @@ import 'package:sketching/utils/index.dart';
 import 'package:sketching/widgets/sketcher.dart';
 
 class SketchingArea extends StatelessWidget {
-  final List<Offset?> points;
+  final List<Line> lines;
   final PanUpdate onPanUpdate;
   final PanEnd onPanEnd;
   final PanStart onPanStart;
   final Color? backgroundColor;
-  final Color? brushColor;
 
   const SketchingArea(
       {Key? key,
       this.backgroundColor = SketchingColors.backgroundDefault,
-      this.brushColor,
       required this.onPanEnd,
       required this.onPanStart,
       required this.onPanUpdate,
-      required this.points})
+      required this.lines})
       : super(key: key);
 
   @override
@@ -32,7 +30,7 @@ class SketchingArea extends StatelessWidget {
             height: MediaQuery.of(context).size.height,
             color: backgroundColor,
             child: CustomPaint(
-              painter: Sketcher(points, brushColor: brushColor),
+              painter: Sketcher(lines),
             )),
       ),
     );

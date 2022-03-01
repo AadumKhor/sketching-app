@@ -12,47 +12,61 @@ class SketchingScreen extends StatefulWidget {
 
 class _SketchingScreenState extends State<SketchingScreen>
     implements SketchingMethods {
-  late List<Offset?> points;
   static const startingColor = SketchingColors.blue;
   static const backgroundColor = SketchingColors.backgroundDefault;
+  static const strokeWidths = [1.0, 2.0, 4.0];
+
+  late List<Line> lines;
+  late Line line;
   late Color currentBrushColor;
   late Color currentBackgroundColor;
+  late int selectedIndex; // for stroke width
 
   @override
   void onPanUpdate(DragUpdateDetails details) {
     RenderBox box = context.findRenderObject() as RenderBox;
     Offset point = box.globalToLocal(details.globalPosition);
+    List<Offset> path = List.from(line.path)..add(point);
+    line = Line(path, currentBrushColor, getStrokeWidth());
+
     setState(() {
-      points = List.from(points)..add(point);
+      if (lines.isEmpty) {
+        lines.add(line);
+      } else {
+        lines[lines.length - 1] = line;
+      }
     });
   }
 
   @override
   void onPanEnd(DragEndDetails details) {
-    points.add(null);
+    setState(() {
+      lines.add(line);
+    });
   }
 
   @override
   void onPanStart(DragStartDetails details) {
-    RenderBox box = context.findRenderObject() as RenderBox;
-    Offset point = box.globalToLocal(details.globalPosition);
+    final box = context.findRenderObject() as RenderBox;
+    final point = box.globalToLocal(details.globalPosition);
     setState(() {
-      points = [point];
+      line = Line([point], currentBrushColor, getStrokeWidth());
     });
   }
 
   @override
   void initState() {
     super.initState();
-    points = [];
+    lines = [];
     currentBrushColor = startingColor;
     currentBackgroundColor = backgroundColor;
+    selectedIndex = 0;
   }
 
   @override
   void dispose() {
     super.dispose();
-    points.clear();
+    lines.clear();
   }
 
   void changeBrushColor(Color color) {
@@ -67,6 +81,10 @@ class _SketchingScreenState extends State<SketchingScreen>
     Navigator.of(context).pop();
   }
 
+  double getStrokeWidth() {
+    return strokeWidths[selectedIndex] * 5.0;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,8 +96,7 @@ class _SketchingScreenState extends State<SketchingScreen>
             onPanEnd: onPanEnd,
             onPanStart: onPanStart,
             onPanUpdate: onPanUpdate,
-            points: points,
-            brushColor: currentBrushColor,
+            lines: lines,
             backgroundColor: currentBackgroundColor,
           ),
           SketchingColorPicker(
@@ -107,7 +124,15 @@ class _SketchingScreenState extends State<SketchingScreen>
                     ),
                   )
                 ]);
-              })
+              }),
+          SketchingStrokeWidth(
+              onTapStrokeWidth: (int index) {
+                setState(() {
+                  selectedIndex = index;
+                });
+              },
+              selectedIndex: selectedIndex,
+              strokeWidths: strokeWidths)
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -116,7 +141,7 @@ class _SketchingScreenState extends State<SketchingScreen>
         tooltip: 'Clear Screen',
         onPressed: () {
           setState(() {
-            points = [];
+            lines = [];
           });
         },
       ),
